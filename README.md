@@ -28,7 +28,8 @@
 ![image](https://github.com/hana2set/AnonymousForum/assets/97689567/1d899a1b-ea32-4530-b8d0-1d465b9b1aec)
 
 ## API 명세서
+![api](https://github.com/hana2set/AnonymousForum/assets/97689567/8af10097-f1f2-4eb6-96cf-88a1eed81a65)
 
 ## ERD
+![image](https://github.com/hana2set/AnonymousForum/assets/97689567/cec60368-2576-4cd5-bd00-1745827a3817)
 
-## 
