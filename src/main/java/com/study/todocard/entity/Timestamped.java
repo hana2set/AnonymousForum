@@ -1,4 +1,4 @@
-package com.study.noticeboard.entity;
+package com.study.todocard.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

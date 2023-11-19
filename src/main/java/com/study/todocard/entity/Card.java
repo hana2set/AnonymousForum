@@ -1,6 +1,6 @@
-package com.study.noticeboard.entity;
+package com.study.todocard.entity;
 
-import com.study.noticeboard.dto.BoardRequestDto;
+import com.study.todocard.dto.CardRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,20 +11,20 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-@Table(name = "board")
-public class Board extends Timestamped{
+@Table(name = "card")
+public class Card extends Timestamped{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
     private String contents;
 
-    public Board(BoardRequestDto requestDto) {
+    public Card(CardRequestDto requestDto) {
         this.username = requestDto.getUsername();
         this.contents = requestDto.getContents();
     }
 
-    public void update(BoardRequestDto requestDto) {
+    public void update(CardRequestDto requestDto) {
         this.username = requestDto.getUsername();
         this.contents = requestDto.getContents();
     }
