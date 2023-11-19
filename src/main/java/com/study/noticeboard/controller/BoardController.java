@@ -38,7 +38,7 @@ public class BoardController {
     }
 
     @DeleteMapping("/boards/{id}/{password}")
-    public Long deleteBoard(@PathVariable Long id, @PathVariable String password) {
-        return boardService.deleteBoard(id, password);
+    public Long deleteBoard(@PathVariable Long id) {
+        return boardService.deleteBoard(id);
     }
 }
