@@ -35,7 +35,7 @@ public class CardService {
     }
 
     @Transactional
-    public Long updateCard(Long id, CardRequestDto requestDto, User user) {
+    public CardResponseDto updateCard(Long id, CardRequestDto requestDto, User user) {
         // DB에 존재하는지 확인
         Card card = cardRepository.findById(id).orElseThrow(() -> new BusinessException("선택한 카드는 존재하지 않습니다."));
         if (!isAccessableUser(user, card.getUser())) {
@@ -43,7 +43,7 @@ public class CardService {
         }
 
         card.update(requestDto);
-        return id;
+        return new CardResponseDto(card);
     }
 
     @Transactional

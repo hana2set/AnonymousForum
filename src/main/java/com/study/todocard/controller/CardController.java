@@ -35,7 +35,7 @@ public class CardController {
     }
 
     @PutMapping("/{id}")
-    public Long updateCard(@PathVariable Long id, @RequestBody CardRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public CardResponseDto updateCard(@PathVariable Long id, @RequestBody CardRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return cardService.updateCard(id, requestDto, userDetails.getUser());
     }
 
