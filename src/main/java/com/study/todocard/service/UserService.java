@@ -1,11 +1,13 @@
 package com.study.todocard.service;
 
+import com.study.todocard.exception.BusinessException;
 import com.study.todocard.security.dto.SignupRequestDto;
 import com.study.todocard.entity.User;
 import com.study.todocard.entity.UserRoleEnum;
 import com.study.todocard.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +30,7 @@ public class UserService {
         // 회원 중복 확인
         Optional<User> checkUsername = userRepository.findByUsername(username);
         if (checkUsername.isPresent()) {
-            throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
+            throw new BusinessException("중복된 username 입니다.", HttpStatus.BAD_REQUEST);
         }
 
         // email 중복확인

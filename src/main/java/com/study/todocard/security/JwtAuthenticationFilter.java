@@ -2,7 +2,6 @@ package com.study.todocard.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.study.todocard.entity.UserRoleEnum;
-import com.study.todocard.jwt.JwtUtil;
 import com.study.todocard.security.dto.LoginRequestDto;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
@@ -56,10 +55,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException {
-        response.setStatus(401);
+        response.setStatus(400);
         response.setContentType("application/json");
         response.setCharacterEncoding("utf-8");
-        response.getWriter().write("로그인 실패");
+        response.getWriter().write("회원을 찾을 수 없습니다.");
     }
 
 }

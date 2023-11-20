@@ -1,6 +1,6 @@
-package com.study.todocard.config;
+package com.study.todocard.security;
 
-import com.study.todocard.jwt.JwtUtil;
+import com.study.todocard.security.JwtUtil;
 import com.study.todocard.security.JwtAuthenticationFilter;
 import com.study.todocard.security.JwtAuthorizationFilter;
 import com.study.todocard.security.UserDetailsServiceImpl;

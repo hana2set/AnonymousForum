@@ -11,6 +11,9 @@ import com.study.todocard.exception.BusinessException;
 import com.study.todocard.repository.CardRepository;
 import com.study.todocard.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +28,7 @@ public class CommentService {
 
     public CommentResponseDto createComment(CommentRequestDto requestDto, User user) {
         if (requestDto.getCardId() == null) {
-            new BusinessException("선택된 카드가 없습니다.");
+            throw new BusinessException("카드를 선택해주세요.");
         }
         Card card = cardRepository.findById(requestDto.getCardId()).orElseThrow(() -> new BusinessException("선택한 카드는 존재하지 않습니다."));
         Comment saveComment = commentRepository.save(new Comment(requestDto, card, user));
@@ -35,24 +38,24 @@ public class CommentService {
     @Transactional
     public CommentResponseDto updateComment(Long id, CommentRequestDto requestDto, User user) {
         // DB에 존재하는지 확인
-        Comment comment = commentRepository.findById(id).orElseThrow(() -> new BusinessException("선택한 카드는 존재하지 않습니다."));
+        Comment comment = commentRepository.findById(id).orElseThrow(() -> new BusinessException("선택한 댓글이 존재하지 않습니다."));
         if (!isAccessableUser(user, comment.getUser())) {
-            throw new BusinessException("해당 카드에 대한 접근 권한이 없습니다.");
+            throw new BusinessException("작성자만 삭제/수정할 수 있습니다", HttpStatus.BAD_REQUEST);
         }
 
         comment.update(requestDto);
         return new CommentResponseDto(comment);
     }
 
-    public Long deleteComment(Long id, User user) {
+    public ResponseEntity deleteComment(Long id, User user) {
         // DB에 존재하는지 확인
-        Comment comment = commentRepository.findById(id).orElseThrow(() -> new BusinessException("선택한 카드는 존재하지 않습니다."));
+        Comment comment = commentRepository.findById(id).orElseThrow(() -> new BusinessException("선택한 댓글이 존재하지 않습니다."));
         if (!isAccessableUser(user, comment.getUser())) {
-            throw new BusinessException("해당 카드에 대한 접근 권한이 없습니다.");
+            throw new BusinessException("작성자만 삭제/수정할 수 있습니다", HttpStatus.BAD_REQUEST);
         }
 
         commentRepository.delete(comment);
-        return id;
+        return new ResponseEntity("댓글이 삭제되었습니다", HttpStatus.OK);
     }
 
     private boolean isAccessableUser(User target_user, User access_user) {

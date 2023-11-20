@@ -15,6 +15,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BusinessException.class)
     protected ResponseEntity<ErrorResponse> handleBusinessException(BusinessException e) {
         log.error(e.getMessage());
-        return new ResponseEntity(e.getMessage(), HttpStatus.FORBIDDEN);
+        return new ResponseEntity(e.getMessage(), e.getStatus());
     }
 }

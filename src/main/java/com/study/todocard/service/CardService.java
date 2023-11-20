@@ -8,6 +8,7 @@ import com.study.todocard.entity.UserRoleEnum;
 import com.study.todocard.exception.BusinessException;
 import com.study.todocard.repository.CardRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,7 +40,7 @@ public class CardService {
         // DB에 존재하는지 확인
         Card card = cardRepository.findById(id).orElseThrow(() -> new BusinessException("선택한 카드는 존재하지 않습니다."));
         if (!isAccessableUser(user, card.getUser())) {
-            throw new BusinessException("해당 카드에 대한 접근 권한이 없습니다.");
+            throw new BusinessException("작성자만 삭제/수정할 수 있습니다", HttpStatus.BAD_REQUEST);
         }
 
         card.update(requestDto);
@@ -51,7 +52,7 @@ public class CardService {
         // DB에 존재하는지 확인
         Card card = cardRepository.findById(id).orElseThrow(() -> new BusinessException("선택한 카드는 존재하지 않습니다."));
         if (!isAccessableUser(user, card.getUser())) {
-            throw new BusinessException("해당 카드에 대한 접근 권한이 없습니다.");
+            throw new BusinessException("작성자만 삭제/수정할 수 있습니다", HttpStatus.BAD_REQUEST);
         }
 
         card.updateComplete(isComplete);
@@ -62,7 +63,7 @@ public class CardService {
         // DB에 존재하는지 확인
         Card card = cardRepository.findById(id).orElseThrow(() -> new BusinessException("선택한 카드는 존재하지 않습니다."));
         if (!isAccessableUser(user, card.getUser())) {
-            throw new BusinessException("해당 카드에 대한 접근 권한이 없습니다.");
+            throw new BusinessException("작성자만 삭제/수정할 수 있습니다", HttpStatus.BAD_REQUEST);
         }
 
         cardRepository.delete(card);

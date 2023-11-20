@@ -1,6 +1,5 @@
 package com.study.todocard.security;
 
-import com.study.todocard.jwt.JwtUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -13,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -40,7 +40,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 res.setStatus(HttpStatus.UNAUTHORIZED.value());
                 res.setContentType("application/json");
                 res.setCharacterEncoding("utf-8");
-                res.getWriter().write("유효하지 않은 토큰입니다.");
+                res.getWriter().write("토큰이 유효하지 않습니다.");
                 return;
             }
 
@@ -48,6 +48,12 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
             try {
                 setAuthentication(info.getSubject());
+            } catch (UsernameNotFoundException e) {
+                res.setStatus(HttpStatus.BAD_REQUEST.value());
+                res.setContentType("application/json");
+                res.setCharacterEncoding("utf-8");
+                res.getWriter().write("회원을 찾을 수 없습니다.");
+                return;
             } catch (Exception e) {
                 log.error(e.getMessage());
                 return;

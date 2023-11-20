@@ -5,6 +5,7 @@ import com.study.todocard.dto.CommentResponseDto;
 import com.study.todocard.security.UserDetailsImpl;
 import com.study.todocard.service.CommentService;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +30,7 @@ public class CommentController {
     }
 
     @DeleteMapping("/{id}")
-    public Long deleteComment(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity deleteComment(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return commentService.deleteComment(id, userDetails.getUser());
     }
 }

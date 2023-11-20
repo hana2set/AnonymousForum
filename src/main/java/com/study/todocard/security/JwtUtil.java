@@ -1,4 +1,4 @@
-package com.study.todocard.jwt;
+package com.study.todocard.security;
 
 import com.study.todocard.entity.UserRoleEnum;
 import io.jsonwebtoken.*;
