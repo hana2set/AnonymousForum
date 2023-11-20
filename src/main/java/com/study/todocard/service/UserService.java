@@ -21,7 +21,7 @@ public class UserService {
     @Value("${admin.token}") // Base64 Encode 한 SecretKey
     private String ADMIN_TOKEN;
 
-    public void signup(SignupRequestDto requestDto) {
+    public void signup(SignupRequestDto requestDto) throws IllegalArgumentException{
         String username = requestDto.getUsername();
         String password = passwordEncoder.encode(requestDto.getPassword());
 
