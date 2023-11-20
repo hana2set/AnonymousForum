@@ -2,7 +2,9 @@ package com.study.todocard.controller;
 
 import com.study.todocard.dto.CardRequestDto;
 import com.study.todocard.dto.CardResponseDto;
+import com.study.todocard.security.UserDetailsImpl;
 import com.study.todocard.service.CardService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,13 +20,13 @@ public class CardController {
     }
 
     @PostMapping("/cards")
-    public CardResponseDto createCard(@RequestBody CardRequestDto requestDto) {
-        return cardService.createCard(requestDto);
+    public CardResponseDto createCard(@RequestBody CardRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return cardService.createCard(requestDto, userDetails.getUser());
     }
 
     @GetMapping("/cards")
-    public List<CardResponseDto> getCards() {
-        return cardService.getCards();
+    public List<CardResponseDto> getCards(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return cardService.getCards(userDetails.getUser());
     }
 
     @GetMapping("/cards/{id}")
@@ -37,7 +39,7 @@ public class CardController {
         return cardService.updateCard(id, requestDto);
     }
 
-    @DeleteMapping("/cards/{id}/{password}")
+    @DeleteMapping("/cards/{id}")
     public Long deleteCard(@PathVariable Long id) {
         return cardService.deleteCard(id);
     }

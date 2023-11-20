@@ -6,26 +6,35 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Getter
 @Setter
 @Table(name = "card")
+@NoArgsConstructor
 public class Card extends Timestamped{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String username;
+    private String title;
     private String contents;
 
-    public Card(CardRequestDto requestDto) {
-        this.username = requestDto.getUsername();
+    @Column(columnDefinition = "boolean default false")
+    private boolean isComplate = false;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    public Card(CardRequestDto requestDto, User user) {
+        this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();
+        this.isComplate = requestDto.getIsComplate();
+        this.user = user;
     }
 
     public void update(CardRequestDto requestDto) {
-        this.username = requestDto.getUsername();
+        this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();
+        this.isComplate = requestDto.getIsComplate();
     }
 }

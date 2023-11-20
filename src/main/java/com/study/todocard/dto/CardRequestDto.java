@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class CardRequestDto {
-    private String username;
+    private String title;
     private String contents;
-    private String password;
+    private Boolean isComplate;
 }
