@@ -19,7 +19,7 @@ public class Card extends Timestamped{
     private String contents;
 
     @Column(columnDefinition = "boolean default false")
-    private boolean isComplate = false;
+    private boolean isComplete = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -28,13 +28,13 @@ public class Card extends Timestamped{
     public Card(CardRequestDto requestDto, User user) {
         this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();
-        this.isComplate = requestDto.getIsComplate();
+        this.isComplete = requestDto.getIsComplete();
         this.user = user;
     }
 
     public void update(CardRequestDto requestDto) {
         this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();
-        this.isComplate = requestDto.getIsComplate();
+        this.isComplete = requestDto.getIsComplete();
     }
 }

@@ -4,6 +4,8 @@ import com.study.todocard.dto.CardRequestDto;
 import com.study.todocard.dto.CardResponseDto;
 import com.study.todocard.entity.Card;
 import com.study.todocard.entity.User;
+import com.study.todocard.entity.UserRoleEnum;
+import com.study.todocard.exception.BusinessException;
 import com.study.todocard.repository.CardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,26 +30,43 @@ public class CardService {
     }
 
     public CardResponseDto getCard(Long id) {
-        Card card = cardRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("선택한 카드는 존재하지 않습니다."));
+        Card card = cardRepository.findById(id).orElseThrow(() -> new BusinessException("선택한 카드는 존재하지 않습니다."));
         return new CardResponseDto(card);
     }
 
     @Transactional
-    public Long updateCard(Long id, CardRequestDto requestDto) {
+    public Long updateCard(Long id, CardRequestDto requestDto, User user) {
         // DB에 존재하는지 확인
-        Card card = cardRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("선택한 카드는 존재하지 않습니다."));
+        Card card = cardRepository.findById(id).orElseThrow(() -> new BusinessException("선택한 카드는 존재하지 않습니다."));
+        if (!isAccessableUser(user, card.getUser())) {
+            throw new BusinessException("유효한 접근이 아닙니다.");
+        }
 
         card.update(requestDto);
         return id;
     }
 
-    public Long deleteCard(Long id) {
+    public Long deleteCard(Long id, User user) {
         // DB에 존재하는지 확인
-        Card card = cardRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("선택한 카드는 존재하지 않습니다."));
+        Card card = cardRepository.findById(id).orElseThrow(() -> new BusinessException("선택한 카드는 존재하지 않습니다."));
+        if (!isAccessableUser(user, card.getUser())) {
+            throw new BusinessException("유효한 접근이 아닙니다.");
+        }
 
         cardRepository.delete(card);
         return id;
     }
 
+    private boolean isAccessableUser(User target_user, User access_user) {
+        if (target_user == null || access_user == null) {
+            return false;
+        }
+
+        if (access_user.getRole() == UserRoleEnum.ADMIN || access_user.getId().equals(target_user.getId())) {
+            return true;
+        }
+
+        return false;
+    }
 
 }

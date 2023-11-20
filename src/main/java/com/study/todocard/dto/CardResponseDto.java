@@ -1,7 +1,6 @@
 package com.study.todocard.dto;
 
 import com.study.todocard.entity.Card;
-import com.study.todocard.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -14,15 +13,15 @@ public class CardResponseDto {
     private String username;
     private String title;
     private String contents;
-    private boolean isComplate;
-    private LocalDateTime createAt;
+    private boolean isComplete;
+    private LocalDateTime createdAt;
 
     public CardResponseDto(Card card) {
         this.id = card.getId();
-        this.isComplate = card.isComplate();
+        this.isComplete = card.isComplete();
         this.username = card.getUser().getUsername(); //TODO null처리
         this.title = card.getTitle();
         this.contents = card.getContents();
-        this.createAt = card.getCreatedAt();
+        this.createdAt = card.getCreatedAt();
     }
 }

@@ -35,12 +35,12 @@ public class CardController {
     }
 
     @PutMapping("/cards/{id}")
-    public Long updateCard(@PathVariable Long id, @RequestBody CardRequestDto requestDto) {
-        return cardService.updateCard(id, requestDto);
+    public Long updateCard(@PathVariable Long id, @RequestBody CardRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return cardService.updateCard(id, requestDto, userDetails.getUser());
     }
 
     @DeleteMapping("/cards/{id}")
-    public Long deleteCard(@PathVariable Long id) {
-        return cardService.deleteCard(id);
+    public Long deleteCard(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return cardService.deleteCard(id, userDetails.getUser());
     }
 }

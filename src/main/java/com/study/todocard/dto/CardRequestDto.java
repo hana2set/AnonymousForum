@@ -6,5 +6,5 @@ import lombok.Getter;
 public class CardRequestDto {
     private String title;
     private String contents;
-    private Boolean isComplate;
+    private Boolean isComplete = false;
 }
