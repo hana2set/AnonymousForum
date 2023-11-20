@@ -39,10 +39,22 @@ public class CardService {
         // DB에 존재하는지 확인
         Card card = cardRepository.findById(id).orElseThrow(() -> new BusinessException("선택한 카드는 존재하지 않습니다."));
         if (!isAccessableUser(user, card.getUser())) {
-            throw new BusinessException("유효한 접근이 아닙니다.");
+            throw new BusinessException("해당 카드에 대한 접근 권한이 없습니다.");
         }
 
         card.update(requestDto);
+        return id;
+    }
+
+    @Transactional
+    public Long updateCardComplete(Long id, boolean isComplete, User user) {
+        // DB에 존재하는지 확인
+        Card card = cardRepository.findById(id).orElseThrow(() -> new BusinessException("선택한 카드는 존재하지 않습니다."));
+        if (!isAccessableUser(user, card.getUser())) {
+            throw new BusinessException("해당 카드에 대한 접근 권한이 없습니다.");
+        }
+
+        card.updateComplete(isComplete);
         return id;
     }
 
@@ -50,7 +62,7 @@ public class CardService {
         // DB에 존재하는지 확인
         Card card = cardRepository.findById(id).orElseThrow(() -> new BusinessException("선택한 카드는 존재하지 않습니다."));
         if (!isAccessableUser(user, card.getUser())) {
-            throw new BusinessException("유효한 접근이 아닙니다.");
+            throw new BusinessException("해당 카드에 대한 접근 권한이 없습니다.");
         }
 
         cardRepository.delete(card);

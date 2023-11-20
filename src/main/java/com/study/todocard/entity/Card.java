@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.apache.logging.log4j.util.PropertiesUtil;
+import org.springframework.beans.BeanUtils;
 
 @Entity
 @Getter
@@ -36,5 +38,9 @@ public class Card extends Timestamped{
         this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();
         this.isComplete = requestDto.getIsComplete();
+    }
+
+    public void updateComplete(boolean isComplete) {
+        this.isComplete = isComplete;
     }
 }
