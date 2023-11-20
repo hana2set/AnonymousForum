@@ -1,14 +1,13 @@
 package com.study.todocard.controller;
 
-import com.study.todocard.dto.SignupRequestDto;
 import com.study.todocard.dto.UserInfoDto;
 import com.study.todocard.entity.UserRoleEnum;
+import com.study.todocard.security.dto.SignupRequestDto;
 import com.study.todocard.security.UserDetailsImpl;
 import com.study.todocard.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.bridge.Message;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

@@ -1,6 +1,6 @@
 package com.study.todocard.service;
 
-import com.study.todocard.dto.SignupRequestDto;
+import com.study.todocard.security.dto.SignupRequestDto;
 import com.study.todocard.entity.User;
 import com.study.todocard.entity.UserRoleEnum;
 import com.study.todocard.repository.UserRepository;

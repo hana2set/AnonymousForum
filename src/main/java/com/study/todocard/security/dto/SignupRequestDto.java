@@ -1,4 +1,4 @@
-package com.study.todocard.dto;
+package com.study.todocard.security.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

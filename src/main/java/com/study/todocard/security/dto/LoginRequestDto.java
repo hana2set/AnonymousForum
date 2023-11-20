@@ -1,4 +1,4 @@
-package com.study.todocard.dto;
+package com.study.todocard.security.dto;
 
 import lombok.Getter;
 import lombok.Setter;
