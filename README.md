@@ -117,6 +117,45 @@
 
 </details>
 
+
+<details>
+	<summary> 테스트 요구 사항 </summary>
+
+## 테스트 요구사항
+- `test` profile 을 설정해서 구현해주세요!
+    - **test profile 을 설정해서 tesr 할때는** DB로 embedded in-memory db(h2)를 사용해주세요. 이때 MySQL문법으로 사용할 것이기에 `MODE=MySQL` 있어야 합니다.
+    - 테스트 클래스에는 `@ActiveProfiles` 어노테이션을 통해 설정값 등을 따로 주입받을 수 있습니다.
+
+- `Mockito` 를 적용하여 레이어간 의존성을 격리시켜주세요.
+
+⚠️ **Warning : 꼭 지켜야 할 것!**
+
+
+- ⚠️  **given-when-then 전략 지키기!**
+    - 테스트 코드 작성시 given-when-then  패턴으로 주석과 함께 3등분해서 나누어서 작성해주세요.
+        - given(준비) - when(실행) - then(검증) 순으로 작성해야 가독성이 좋고 관리가 편리해집니다.
+
+- ⚠️ **Test Commit Message 남기기!**
+    - 테스트 코드가 정상적으로 추가될때마다 해당 테스트에 대한 내용과 함께 커밋을 남겨주세요.
+        - 커밋 메세지 앞에는 어떤 것에 대한 커밋인지 명시해줘야 합니다.
+
+        ```
+        # feat     : 기능 (새로운 기능)
+        # fix      : 버그 (버그 수정)
+        # refactor : 리팩토링
+        # docs     : 문서 (문서 추가, 수정, 삭제)
+        # test     : 테스트 (테스트 코드 추가, 수정, 삭제: 비즈니스 로직에 변경 없음)
+        ```
+
+        - 추가/수정/삭제한 테스트 코드가 어떤것인지 뒤에 이어서 작성해주세요.
+
+        ```jsx
+        teat(api): 댓글 목록 조회 기능 성공 테스트 추가
+        teat(api): 댓글 목록 조회 기능 실패 테스트 추가
+        ``` 
+
+</details>
+
 ## 디렉토리 구조
 ```cmd
 ─src
@@ -154,3 +193,4 @@ https://documenter.getpostman.com/view/30923517/2s9Ye8hFxu
 
 ## ERD
 ![image](https://github.com/hana2set/todocard/assets/97689567/727bb702-5b41-49db-84c1-beddd38e6a8f)
+
