@@ -20,7 +20,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class CardServiceImple implements CardService{
+public class CardServiceImpl implements CardService{
 
     private final CardRepository cardRepository;
 
