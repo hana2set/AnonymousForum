@@ -4,6 +4,8 @@ import com.study.todocard.dto.CardRequestDto;
 import com.study.todocard.dto.CardResponseDto;
 import com.study.todocard.security.UserDetailsImpl;
 import com.study.todocard.service.CardService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,14 +27,20 @@ public class CardController {
     }
 
     @GetMapping("")
-    public List<CardResponseDto> getCards(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return cardService.getCards(userDetails.getUser());
+    public List<CardResponseDto> listCards(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return cardService.listCards(userDetails.getUser());
+    }
+
+    @GetMapping("/relationCards")
+    public Page<CardResponseDto> listRelationCards(Pageable pageable, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return cardService.listRelationCards(pageable, userDetails.getUser());
     }
 
     @GetMapping("/{id}")
     public CardResponseDto getCard(@PathVariable Long id) {
         return cardService.getCard(id);
     }
+
 
     @PutMapping("/{id}")
     public CardResponseDto updateCard(@PathVariable Long id, @RequestBody CardRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {

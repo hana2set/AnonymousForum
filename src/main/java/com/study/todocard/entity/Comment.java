@@ -4,15 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.study.todocard.dto.CardRequestDto;
 import com.study.todocard.dto.CommentRequestDto;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
-@Setter
+@Builder
 @Table(name = "comment")
 @NoArgsConstructor
+@AllArgsConstructor
 public class Comment extends Timestamped{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,11 +25,6 @@ public class Comment extends Timestamped{
     @JoinColumn(name = "card_id")
     private Card card;
 
-    public Comment(CommentRequestDto requestDto, Card card, User user) {
-        this.contents = requestDto.getContents();
-        this.card = card;
-        this.user = user;
-    }
 
     public void update(CommentRequestDto requestDto) {
         this.contents = requestDto.getContents();

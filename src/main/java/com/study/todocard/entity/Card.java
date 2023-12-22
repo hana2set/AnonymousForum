@@ -2,18 +2,17 @@ package com.study.todocard.entity;
 
 import com.study.todocard.dto.CardRequestDto;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
-@Setter
-@Table(name = "card")
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "card")
 public class Card extends Timestamped{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,6 +29,7 @@ public class Card extends Timestamped{
 
     @OneToMany(mappedBy = "card")
     private List<Comment> commentList = new ArrayList<>();
+
 
     public Card(CardRequestDto requestDto, User user) {
         this.title = requestDto.getTitle();

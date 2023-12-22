@@ -1,12 +1,5 @@
-spring:
-  profiles:
-    active: "dev,test"
 
----
 spring:
-  config:
-    activate:
-      on-profile: dev
   datasource:
     url: jdbc:mysql://localhost:3306/card
     username: root
@@ -22,7 +15,6 @@ spring:
         use_sql_comments: true
 jwt.secret.key: 7Iqk7YyM66W07YOA7L2U65Sp7YG065+9U3ByaW5n6rCV7J2Y7Yqc7YSw7LWc7JuQ67mI7J6F64uI64ukLg==
 admin.token: AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC
-
 ---
 
 spring:
@@ -40,3 +32,4 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+jwt.secret.key: 7KCc7J2066aE7J2A6rmA7JiB6rec7J24642w7JqU7YWM7Iqk7Yq47Jqp7Jy866Gc66eM65Ok7Ja067O07JWY7Iq164uI64ukLg==

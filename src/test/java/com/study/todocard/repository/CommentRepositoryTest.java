@@ -5,7 +5,9 @@ import com.study.todocard.dto.CommentRequestDto;
 import com.study.todocard.entity.Card;
 import com.study.todocard.entity.Comment;
 import com.study.todocard.entity.User;
-import com.study.todocard.entity.UserRoleEnum;
+import com.study.todocard.entity.UserRole;
+import com.study.todocard.util.CardConverter;
+import com.study.todocard.util.CommentConverter;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -28,6 +30,9 @@ class CommentRepositoryTest {
     @Autowired
     private TestEntityManager entityManager;
 
+    @Autowired
+    private CommentConverter commentConverter;
+
     private Card card1;
     private Card card2;
 
@@ -40,22 +45,22 @@ class CommentRepositoryTest {
         CommentRequestDto requestDto2 = new CommentRequestDto();
         requestDto2.setContents("두번째 코멘트");
 
-        User user = new User("robi", "12341234", "test@test.com", UserRoleEnum.USER);
+        User user = new User("robi", "12341234", "test@test.com", UserRole.USER);
 
         CardRequestDto cardRequestDto = new CardRequestDto();
         cardRequestDto.setTitle("card_title");
 
-        card1 = new Card(cardRequestDto, user);
+        card1 = CardConverter.toEntity(cardRequestDto, user);
 
         entityManager.persist(user);
         entityManager.persist(card1);
 
-        commentRepository.save(new Comment(requestDto1, card1, user));
-        commentRepository.save(new Comment(requestDto2, card1, user));
+        commentRepository.save(commentConverter.getComment(requestDto1, card1, user));
+        commentRepository.save(commentConverter.getComment(requestDto2, card1, user));
 
         cardRequestDto = new CardRequestDto();
         cardRequestDto.setTitle("card_title");
-        card2 = new Card(cardRequestDto, user);
+        card2 = CardConverter.toEntity(cardRequestDto, user);
         entityManager.persist(card2);
 
     }

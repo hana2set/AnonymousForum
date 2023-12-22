@@ -8,6 +8,6 @@ import java.util.Collection;
 import java.util.List;
 
 
-public interface CardRepository extends JpaRepository<Card, Long> {
+public interface CardRepository extends JpaRepository<Card, Long>, CardRepositoryQuery {
     List<Card> findAllByUserOrderByCreatedAtDesc(User user);
 }

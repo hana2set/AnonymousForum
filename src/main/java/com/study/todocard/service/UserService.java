@@ -1,9 +1,10 @@
 package com.study.todocard.service;
 
 import com.study.todocard.exception.BusinessException;
+import com.study.todocard.exception.ExceptionType;
 import com.study.todocard.security.dto.SignupRequestDto;
 import com.study.todocard.entity.User;
-import com.study.todocard.entity.UserRoleEnum;
+import com.study.todocard.entity.UserRole;
 import com.study.todocard.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,30 +24,28 @@ public class UserService {
     @Value("${admin.token}") // Base64 Encode 한 SecretKey
     private String ADMIN_TOKEN;
 
-    public void signup(SignupRequestDto requestDto) throws IllegalArgumentException{
+    public void signup(SignupRequestDto requestDto){
         String username = requestDto.getUsername();
         String password = passwordEncoder.encode(requestDto.getPassword());
 
         // 회원 중복 확인
-        Optional<User> checkUsername = userRepository.findByUsername(username);
-        if (checkUsername.isPresent()) {
-            throw new BusinessException("중복된 username 입니다.", HttpStatus.BAD_REQUEST);
+        if (userRepository.findByUsername(username).isPresent()) {
+            throw new BusinessException(ExceptionType.DUPLICATE_USER);
         }
 
         // email 중복확인
         String email = requestDto.getEmail();
-        Optional<User> checkEmail = userRepository.findByEmail(email);
-        if (checkEmail.isPresent()) {
-            throw new IllegalArgumentException("중복된 Email 입니다.");
+        if (userRepository.findByEmail(email).isPresent()) {
+            throw new BusinessException(ExceptionType.DUPLICATE_EMAIL);
         }
 
         // 사용자 ROLE 확인
-        UserRoleEnum role = UserRoleEnum.USER;
+        UserRole role = UserRole.USER;
         if (requestDto.isAdmin()) {
             if (!ADMIN_TOKEN.equals(requestDto.getAdminToken())) {
-                throw new IllegalArgumentException("관리자 암호가 틀려 등록이 불가능합니다.");
+                throw new BusinessException(ExceptionType.WRONG_ADMIN_PASSWORD);
             }
-            role = UserRoleEnum.ADMIN;
+            role = UserRole.ADMIN;
         }
 
         // 사용자 등록

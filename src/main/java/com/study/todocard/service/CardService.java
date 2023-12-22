@@ -4,82 +4,71 @@ import com.study.todocard.dto.CardRequestDto;
 import com.study.todocard.dto.CardResponseDto;
 import com.study.todocard.entity.Card;
 import com.study.todocard.entity.User;
-import com.study.todocard.entity.UserRoleEnum;
+import com.study.todocard.entity.UserRole;
 import com.study.todocard.exception.BusinessException;
+import com.study.todocard.exception.ExceptionType;
 import com.study.todocard.repository.CardRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Service
-@RequiredArgsConstructor
-public class CardService {
 
-    private final CardRepository cardRepository;
+public interface CardService {
 
-    public CardResponseDto createCard(CardRequestDto requestDto, User user) {
-        Card saveCard = cardRepository.save(new Card(requestDto, user));
-        return new CardResponseDto(saveCard);
-    }
+    /**
+     * 게시글 생성
+     * @param requestDto 게시글 생성 요청정보
+     * @param user 게시글 생성 요청자
+     * @return 게시글 생성 결과
+     */
+    CardResponseDto createCard(CardRequestDto requestDto, User user);
 
-    public List<CardResponseDto> getCards(User user) {
-        // DB 조회
-        return cardRepository.findAllByUserOrderByCreatedAtDesc(user).stream().map(CardResponseDto::new).toList();
-    }
+    /**
+     * 작성 게시글 전체 조회
+     * @param user 게시글 조회 요청자
+     * @return 게시글 조회 결과
+     */
+    List<CardResponseDto> listCards(User user);
 
-    public CardResponseDto getCard(Long id) {
-        Card card = cardRepository.findById(id).orElseThrow(() -> new BusinessException("선택한 카드는 존재하지 않습니다."));
-        return new CardResponseDto(card);
-    }
 
-    @Transactional
-    public CardResponseDto updateCard(Long id, CardRequestDto requestDto, User user) {
-        // DB에 존재하는지 확인
-        Card card = cardRepository.findById(id).orElseThrow(() -> new BusinessException("선택한 카드는 존재하지 않습니다."));
-        if (!isAccessableUser(user, card.getUser())) {
-            throw new BusinessException("작성자만 삭제/수정할 수 있습니다", HttpStatus.BAD_REQUEST);
-        }
+    /**
+     * 관련 게시글 전체 조회 (댓글작성 등)
+     * @param user 게시글 조회 요청자
+     * @return 게시글 조회 결과
+     */
+    Page<CardResponseDto> listRelationCards(Pageable pageable, User user);
 
-        card.update(requestDto);
-        return new CardResponseDto(card);
-    }
+    /**
+     * 선택 게시물 조회
+     * @param id 게시글 Id
+     * @return 게시글 조회 결과
+     */
+    CardResponseDto getCard(Long id);
 
-    @Transactional
-    public Long updateCardComplete(Long id, boolean isComplete, User user) {
-        // DB에 존재하는지 확인
-        Card card = cardRepository.findById(id).orElseThrow(() -> new BusinessException("선택한 카드는 존재하지 않습니다."));
-        if (!isAccessableUser(user, card.getUser())) {
-            throw new BusinessException("작성자만 삭제/수정할 수 있습니다", HttpStatus.BAD_REQUEST);
-        }
+    /**
+     * 선택 게시물 수정
+     * @param id 게시글 Id
+     * @return 게시글 조회 결과
+     */
+    CardResponseDto updateCard(Long id, CardRequestDto requestDto, User user);
 
-        card.updateComplete(isComplete);
-        return id;
-    }
+    /**
+     * 선택 게시물 완료 여부 수정
+     * @param id 게시글 Id
+     * @return 게시글 Id 반환
+     */
+    Long updateCardComplete(Long id, boolean isComplete, User user);
 
-    public Long deleteCard(Long id, User user) {
-        // DB에 존재하는지 확인
-        Card card = cardRepository.findById(id).orElseThrow(() -> new BusinessException("선택한 카드는 존재하지 않습니다."));
-        if (!isAccessableUser(user, card.getUser())) {
-            throw new BusinessException("작성자만 삭제/수정할 수 있습니다", HttpStatus.BAD_REQUEST);
-        }
-
-        cardRepository.delete(card);
-        return id;
-    }
-
-    private boolean isAccessableUser(User target_user, User access_user) {
-        if (target_user == null || access_user == null) {
-            return false;
-        }
-
-        if (access_user.getRole() == UserRoleEnum.ADMIN || access_user.getId().equals(target_user.getId())) {
-            return true;
-        }
-
-        return false;
-    }
-
+    /**
+     * 선택 게시물 삭제
+     * @param id 게시글 Id
+     * @param user 게시글 삭제 요청 유저
+     * @return 게시글 Id 반환
+     */
+    Long deleteCard(Long id, User user);
 }

@@ -1,16 +1,12 @@
 package com.study.todocard.controller;
 
-import com.study.todocard.dto.UserInfoDto;
-import com.study.todocard.entity.UserRoleEnum;
 import com.study.todocard.security.dto.SignupRequestDto;
-import com.study.todocard.security.UserDetailsImpl;
 import com.study.todocard.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +23,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/user/signup")
-    public ResponseEntity<Object> signup(@Valid SignupRequestDto requestDto, BindingResult bindingResult) {
+    public ResponseEntity signup(@Valid SignupRequestDto requestDto, BindingResult bindingResult) {
         // Validation 예외처리
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();
         if(fieldErrors.size() > 0) {
@@ -40,13 +36,9 @@ public class UserController {
             return new ResponseEntity(details.toString(), HttpStatus.BAD_REQUEST);
         }
 
-        try {
-            userService.signup(requestDto);
-        } catch (IllegalArgumentException ie) {
-            return new ResponseEntity(ie.getMessage(), HttpStatus.CONFLICT);
-        }
+        userService.signup(requestDto);
 
-        return new ResponseEntity("계정이 생성되었습니다.", HttpStatus.CREATED);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
 }

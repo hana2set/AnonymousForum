@@ -1,5 +1,6 @@
 package com.study.todocard.dto;
 
+import com.study.todocard.constant.CommonTest;
 import com.study.todocard.security.dto.SignupRequestDto;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
@@ -9,9 +10,10 @@ import org.junit.jupiter.api.*;
 
 import java.util.Set;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-class DtoTest {
+class DtoTest implements CommonTest {
     private static ValidatorFactory factory;
     private static Validator validator;
 
@@ -31,8 +33,8 @@ class DtoTest {
         @BeforeAll
         public static void init() {
             requestDto = new SignupRequestDto();
-            requestDto.setUsername("user");
-            requestDto.setPassword("1234567890");
+            requestDto.setUsername(TEST_USER_NAME);
+            requestDto.setPassword(TEST_USER_PASSWORD);
         }
 
         @Order(1)
@@ -56,7 +58,7 @@ class DtoTest {
         @DisplayName("SingupDto 이메일 형식")
         void test2() {
             // given
-            requestDto.setEmail("abcde");
+            requestDto.setEmail("Invalid email format");
 
             // when
             Set<ConstraintViolation<SignupRequestDto>> violations = validator.validate(requestDto);
@@ -81,10 +83,15 @@ class DtoTest {
             Set<ConstraintViolation<SignupRequestDto>> violations = validator.validate(requestDto);
 
             // then
-            assertEquals(1, violations.size());
-            for (ConstraintViolation<SignupRequestDto> violation : violations) {
-                assertEquals("\"^[a-z0-9]*\"와 일치해야 합니다", violation.getMessage());
-            }
+//            assertEquals(1, violations.size());
+//            for (ConstraintViolation<SignupRequestDto> violation : violations) {
+//                assertEquals("\"^[a-z0-9]*\"와 일치해야 합니다", violation.getMessage());
+//            }
+
+            assertThat(violations).hasSize(1);
+            assertThat(violations)
+                    .extracting("message")
+                    .contains("\"^[a-z0-9]*\"와 일치해야 합니다");
 
         }
 

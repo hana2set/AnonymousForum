@@ -8,11 +8,13 @@ import com.study.todocard.entity.User;
 import com.study.todocard.exception.BusinessException;
 import com.study.todocard.repository.CardRepository;
 import com.study.todocard.repository.CommentRepository;
+import com.study.todocard.util.CommentConverter;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Optional;
@@ -31,6 +33,9 @@ class CommentServiceTest {
     @Mock
     CardRepository cardRepository;
 
+    @Autowired
+    CommentConverter commentConverter;
+
     @Test
     @DisplayName("코멘트 수정 성공")
     void test2() {
@@ -44,9 +49,9 @@ class CommentServiceTest {
         User user = new User();
         user.setId(100L);
 
-        Comment comment = new Comment(requestDto, card, user);
+        Comment comment = commentConverter.getComment(requestDto, card, user);
 
-        CommentService commentService = new CommentService(commentRepository, cardRepository);
+        CommentService commentService = new CommentService(commentRepository, cardRepository, commentConverter);
 
         given(commentRepository.findById(CommentId)).willReturn(
                 Optional.of(comment)
@@ -71,9 +76,9 @@ class CommentServiceTest {
         User user1 = new User();
         user1.setId(100L);
 
-        Comment comment = new Comment(requestDto, card, user1);
+        Comment comment = commentConverter.getComment(requestDto, card, user1);
 
-        CommentService commentService = new CommentService(commentRepository, cardRepository);
+        CommentService commentService = new CommentService(commentRepository, cardRepository, commentConverter);
 
         given(commentRepository.findById(CommentId)).willReturn(
                 Optional.of(comment)
