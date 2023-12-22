@@ -1,4 +1,4 @@
-package com.study.todocard.handler;
+package com.study.todocard.exception;
 
 import com.study.todocard.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
