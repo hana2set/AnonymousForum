@@ -2,6 +2,8 @@ package com.study.todocard.controller;
 
 import com.study.todocard.dto.CommentRequestDto;
 import com.study.todocard.dto.CommentResponseDto;
+import com.study.todocard.exception.BusinessException;
+import com.study.todocard.exception.ExceptionType;
 import com.study.todocard.security.UserDetailsImpl;
 import com.study.todocard.service.CommentService;
 import jakarta.validation.Valid;
@@ -21,6 +23,9 @@ public class CommentController {
 
     @PostMapping("")
     public CommentResponseDto createComment(@RequestBody CommentRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        if (requestDto.getCardId() == null) {
+            throw new BusinessException(ExceptionType.NOT_CHOICE_CARD);
+        }
         return commentService.createComment(requestDto, userDetails.getUser());
     }
 
