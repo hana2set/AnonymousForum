@@ -1,6 +1,7 @@
 package com.study.todocard.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,6 +29,7 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     private UserRole role;
 
+    @Builder
     public User(String username, String password, String email, UserRole role) {
         this.username = username;
         this.password = password;

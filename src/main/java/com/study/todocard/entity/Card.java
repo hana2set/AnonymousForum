@@ -9,8 +9,6 @@ import java.util.List;
 
 @Entity
 @Getter
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "card")
 public class Card extends Timestamped{
@@ -31,10 +29,11 @@ public class Card extends Timestamped{
     private List<Comment> commentList = new ArrayList<>();
 
 
-    public Card(CardRequestDto requestDto, User user) {
-        this.title = requestDto.getTitle();
-        this.contents = requestDto.getContents();
-        this.isComplete = requestDto.getIsComplete();
+    @Builder
+    public Card(String title, String contents, boolean isComplete, User user) {
+        this.title = title;
+        this.contents = contents;
+        this.isComplete = isComplete;
         this.user = user;
     }
 

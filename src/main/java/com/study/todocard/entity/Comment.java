@@ -8,10 +8,8 @@ import lombok.*;
 
 @Entity
 @Getter
-@Builder
 @Table(name = "comment")
 @NoArgsConstructor
-@AllArgsConstructor
 public class Comment extends Timestamped{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +23,12 @@ public class Comment extends Timestamped{
     @JoinColumn(name = "card_id")
     private Card card;
 
+    @Builder
+    public Comment(String contents, User user, Card card) {
+        this.contents = contents;
+        this.user = user;
+        this.card = card;
+    }
 
     public void update(CommentRequestDto requestDto) {
         this.contents = requestDto.getContents();
